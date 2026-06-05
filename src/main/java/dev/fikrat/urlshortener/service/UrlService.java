@@ -2,6 +2,7 @@ package dev.fikrat.urlshortener.service;
 
 import dev.fikrat.urlshortener.dto.ShortenResponse;
 import dev.fikrat.urlshortener.dto.StatsResponse;
+import dev.fikrat.urlshortener.exception.CodeConflictException;
 import dev.fikrat.urlshortener.exception.CodeNotFoundException;
 import dev.fikrat.urlshortener.model.ShortUrl;
 import dev.fikrat.urlshortener.repository.UrlRepository;
@@ -30,7 +31,15 @@ public class UrlService {
         this.redis = redis;
     }
 
-    public ShortenResponse shorten(String originalUrl) {
+    public ShortenResponse shorten(String originalUrl, String customCode) {
+        if (customCode != null && !customCode.isBlank()) {
+            if (repository.findByCode(customCode).isPresent()) {
+                throw new CodeConflictException(customCode);
+            }
+            ShortUrl saved = repository.save(new ShortUrl(customCode, originalUrl));
+            redis.opsForValue().set(CACHE_PREFIX + customCode, originalUrl, CACHE_TTL);
+            return toResponse(saved);
+        }
         return repository.findByOriginalUrl(originalUrl)
             .map(this::toResponse)
             .orElseGet(() -> {

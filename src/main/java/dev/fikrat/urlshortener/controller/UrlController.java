@@ -25,7 +25,7 @@ public class UrlController {
     @PostMapping("/api/shorten")
     @Operation(summary = "Shorten a URL")
     public ResponseEntity<ShortenResponse> shorten(@Valid @RequestBody ShortenRequest request) {
-        return ResponseEntity.ok(service.shorten(request.url()));
+        return ResponseEntity.ok(service.shorten(request.url(), request.customCode()));
     }
 
     @GetMapping("/{code}")
