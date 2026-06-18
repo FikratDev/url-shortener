@@ -42,7 +42,7 @@ class UrlServiceTest {
         ShortUrl existing = new ShortUrl("abc1234", "https://example.com");
         when(repository.findByOriginalUrl("https://example.com")).thenReturn(Optional.of(existing));
 
-        ShortenResponse response = service.shorten("https://example.com");
+        ShortenResponse response = service.shorten("https://example.com", null);
 
         assertThat(response.code()).isEqualTo("abc1234");
         verify(repository, never()).save(any());
@@ -56,7 +56,7 @@ class UrlServiceTest {
         when(repository.save(any())).thenReturn(saved);
         doNothing().when(valueOps).set(anyString(), anyString(), any());
 
-        ShortenResponse response = service.shorten("https://new.com");
+        ShortenResponse response = service.shorten("https://new.com", null);
 
         assertThat(response.shortUrl()).contains("xyz7890");
         verify(repository).save(any(ShortUrl.class));
