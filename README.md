@@ -2,6 +2,8 @@
 
 A production-shaped URL shortening service built with Spring Boot, PostgreSQL, and Redis.
 
+Also ported to Python/FastAPI → [shortlink-api](https://github.com/FikratDev/shortlink-api), to check that the design decisions here (idempotent shortening, cache-aside Redis, atomic click counting) were sound choices and not just convenient ones in Spring.
+
 ## What it does
 
 - `POST /api/shorten` — shorten any HTTP/HTTPS URL, returns a 7-character code
