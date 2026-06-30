@@ -1,0 +1,5 @@
+aws_region      = "eu-west-2"
+app_name        = "url-shortener"
+db_username     = "postgres"
+# db_password is intentionally not set here — pass it via TF_VAR_db_password
+container_image = "ghcr.io/fikratdev/url-shortener:latest"
