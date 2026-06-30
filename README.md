@@ -18,7 +18,8 @@ A production-shaped URL shortening service built with Spring Boot, PostgreSQL, a
 | Database | PostgreSQL 16 |
 | Cache | Redis 7 |
 | Docs | Swagger UI (`/swagger-ui.html`) |
-| Infra | Docker Compose |
+| Infra | Docker Compose (local) · Terraform on AWS ECS Fargate + RDS (see `terraform/`) |
+| CI/CD | GitHub Actions — test, build, push image to GHCR on every merge to main |
 
 ## Quick start
 
@@ -68,6 +69,10 @@ curl http://localhost:8080/api/stats/a3f9c12
 ```bash
 mvn test
 ```
+
+## Deploying to AWS
+
+The `terraform/` directory provisions ECS Fargate, RDS Postgres, ECR, and the IAM roles needed to run this on AWS. See [`terraform/README.md`](terraform/README.md) for the full setup. CI builds and pushes the image on every push to `main`; `terraform apply` picks up the latest tag.
 
 ## Design notes
 
